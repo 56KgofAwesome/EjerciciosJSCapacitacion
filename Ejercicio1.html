@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Ejercicio 1 - JavaScript</title>
+    </head>
+    <body>
+        <div class="container">
+            <h3>Formulario de Registro</h3>
+            <form action="#" id="registerForm">
+                <div class="row">
+                    <label>Nombre</label><br>
+                    <input type="text" name="userName" id="userName">
+                </div>
+                <div class="row">
+                    <label>Apellidos</label><br>
+                    <input type="text" name="userLastName" id="userLastName">
+                </div>
+                <div class="row">
+                    <label>Dirección </label><br>
+                    <input type="text" name="userAddress" id="userAddress">
+                </div>
+                <div class="row">
+                    <label>Correo electrónico</label><br>
+                    <input type="text" name="userEmail" id="userEmail">
+                </div>
+                <div class="row">
+                    <label>Fecha de nacimiento</label><br>
+                    <input type="date" name="userBirthDate" id="userBirthDate">
+                </div>
+                <div class="row">
+                    <label>Observaciones</label><br>
+                    <input type="text" name="userComments" id="userComments">
+                </div>
+                <button type="submit">Enviar</button>
+            </form>
+        </div>
+    </body>
+    <script>
+
+        const _myForm = document.getElementById("registerForm");
+        
+        //Método para limpiar los espacios dobles de los campos Nombre y Apellidos utilizando Expresiones regulares
+        let formatFullName = (nameToFormat,lastNameToFormat) => {
+            nameToFormat = nameToFormat.replace(/([\ \t]+(?=[\ \t])|^\s+|\s+$)/g, '');
+            lastNameToFormat= lastNameToFormat.replace(/([\ \t]+(?=[\ \t])|^\s+|\s+$)/g, '');
+            
+            return nameToFormat,lastNameToFormat;
+        }
+        //Submit del formulario
+        _myForm.addEventListener("submit", event=> {
+            event.preventDefault();
+            //Variables del Formulario
+            userName = _myForm.userName.value;
+            userLastName = _myForm.userLastName.value;
+            
+            formatFullName(userName,userLastName);
+             
+        });
+
+
+
+    </script>
+</html>
