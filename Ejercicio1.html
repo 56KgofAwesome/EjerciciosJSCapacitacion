@@ -14,15 +14,16 @@
                 <div class="row">
                     <label>Apellidos</label><br>
                     <input type="text" name="userLastName" id="userLastName">
-                </div>
+                </div><br>
                 <div class="row">
                     <label>Dirección </label><br>
                     <input type="text" name="userAddress" id="userAddress">
                 </div>
                 <div class="row">
                     <label>Correo electrónico</label><br>
-                    <input type="text" name="userEmail" id="userEmail">
-                </div>
+                    <input type="text" name="userEmail" id="userEmail" oninput="checkEmailFormat()"><br>
+                    <span style="display:none; color: red;" id="wrongEmailFormatMessage">El formato no es válido.</span>
+                </div><br>
                 <div class="row">
                     <label>Fecha de nacimiento</label><br>
                     <input type="date" name="userBirthDate" id="userBirthDate">
@@ -43,15 +44,29 @@
         let formatFullName = (nameToFormat,lastNameToFormat) => {
             nameToFormat = nameToFormat.replace(/([\ \t]+(?=[\ \t])|^\s+|\s+$)/g, '');
             lastNameToFormat= lastNameToFormat.replace(/([\ \t]+(?=[\ \t])|^\s+|\s+$)/g, '');
-            
             return nameToFormat,lastNameToFormat;
-        }
+        };
+        //Método para verificación del formato del email utilizando RegEx
+        let checkEmailFormat = () =>{
+            let emailText = document.getElementById("userEmail").value;
+            let _validator = /\S+@\S+\.\S+/;
+            if(_validator.test(emailText) || emailText === ""){
+                document.getElementById("wrongEmailFormatMessage").style.display = 'none';                
+                return emailText;
+            }else{
+                document.getElementById("wrongEmailFormatMessage").style.display = 'inline';
+                //Retornar valor por defecto, o validar el boton de submit
+            }
+            
+        };
         //Submit del formulario
         _myForm.addEventListener("submit", event=> {
             event.preventDefault();
             //Variables del Formulario
             userName = _myForm.userName.value;
             userLastName = _myForm.userLastName.value;
+            userAddress = _myForm.userAddress.value;
+            //Email pendiente
             
             formatFullName(userName,userLastName);
              
