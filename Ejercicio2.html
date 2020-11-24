@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title> Ejercicio 2 </title>
+        <style>
+            .square{
+                width: 300px;
+                height: 300px;
+                border: 1px solid black;
+                margin: 5px;
+                
+                display: inline-block;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="container">
+            <div class="square" id="sq1" style=" background-color: green;" onmouseover="changeColor(id)">
+                
+            </div>
+            <div class="square" id="sq2" style="background-color: blueviolet;" onmouseover="changeColor(id)">
+
+            </div>
+            <div class="square" id="sq3" style="background-color: yellow;" onmouseover="changeColor(id)">
+
+            </div>
+            <div class="square" id="sq4" style="background-color: gray;" onmouseover="changeColor(id)">
+
+            </div>
+            <div class="square " id="sq5" style="background-color: orangered;" onmouseover="changeColor(id)">
+
+            </div>
+        </div>
+        <script>
+            //Cambio de color del background en funcion de los div´s
+           const changeColor = (id) =>{
+            divColor = document.getElementById(id).style.backgroundColor;
+            document.body.style.backgroundColor = divColor;            
+           }
+        </script>
+    </body>
+</html>
