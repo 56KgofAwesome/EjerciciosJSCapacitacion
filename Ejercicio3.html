@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Ejercicio 3</title>
+    </head>
+    <body>
+        <div class="container">
+            <form id="convertCurrencyForm">
+                <h3>Conversión de Pesos MXN a Dólares USD </h3>
+                <label id="localCurrencyLabel">Cantidad en Pesos: </label><br>
+                <input type="text" id="inputMXN"><br>
+                <label id="exchangeCurrencyLabel">Valor del Dólar: </label><br>
+                <input type="text" id="inputUSD"><br>
+                <span id="conversionResult">El total es: </span><br>
+                <input type="button" id="convertButton" value="Convertir" onclick="convertCurrency()"><br>
+                <input type="button" id="cleanButton" value="Limpiar" onclick="reset()"><br>
+                <input type="button" id="swapConversionButton" value="Invertir" onclick="swapConversion()">                
+            </form>
+        </div>
+        <script>
+            //Variable de control
+            var conversionType = true; //True MXN->USD, False USD->MXN;
+            //Verificar formato del input
+            const isNumber = (id) =>{
+               
+            }
+            //Limpia el formulario
+            const reset = () =>{
+                document.getElementById("convertCurrencyForm").reset;
+            }
+            //Conversión de MXN a USD 
+            const convertCurrency = () =>{
+                let mxnString = document.getElementById("inputMXN").value;
+                let usdString = document.getElementById("inputUSD").value;
+                console.log(typeof mxnString)
+
+                if(mxnString == '' || usdString == ''){
+                    let mxnValue = +document.getElementById("inputMXN").value;
+                    let usdValue = +document.getElementById("inputUSD").value;
+
+                    if(conversionType){
+                        //MXN->USD
+                        var conversion = mxnValue / usdValue;
+                        document.getElementById("conversionResult").textContent = `El total es: ${conversion} USD`;
+                    }else{
+                        //USD->MXN
+                        var conversion = mxnValue * usdValue;
+                        document.getElementById("conversionResult").textContent = `El total es: ${conversion} MXN`;
+                    }
+                }else{
+                    alert("Ha ocurrido un error, revisa los datos ingresados.")
+                }
+                
+                
+            }
+            //Swap conversión
+            const swapConversion = () =>{
+                if(conversionType){
+                    document.getElementById("localCurrencyLabel").textContent = "Cantidad en Dólares: ";
+                    return conversionType = !conversionType;
+                }else{
+                    document.getElementById("localCurrencyLabel").textContent = "Cantidad en Pesos: ";
+                    return conversionType = !conversionType;
+                }                
+            }
+
+        </script>
+    </body>
+</html>
