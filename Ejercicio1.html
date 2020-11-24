@@ -41,6 +41,21 @@
                 <button type="submit">Enviar</button>
             </form>
         </div>
+        <div class="container" style="display:none;" id="userInformation">
+            <h2>Información del usuario</h2>
+            <h3>Nombre: </h1>
+            <label id="dataUserName"></label>
+            <h3>Apellidos:</h1>
+            <label id="dataLastName"></label>
+            <h3>Dirección:</h3>
+            <label id="dataAddress"></label>
+            <h3>Correo electrónico:</h3>
+            <label id="dataEmail"></label>
+            <h3>Edad:</h3>
+            <label id="dataAge"></label>
+            <h3>Observaciones:</h3>
+            <label id="dataComments"></label>
+        </div>
     </body>
     <script>
 
@@ -60,6 +75,7 @@
             var maxDate = year + '-' + month + '-' + day;
             $('#userBirthDate').attr('max', maxDate);
         });
+        
         //Método para limpiar los espacios dobles de los campos Nombre y Apellidos utilizando Expresiones regulares
         const formatString = stringToFormat =>{
             formattedString = stringToFormat.replace(/([\ \t]+(?=[\ \t])|^\s+|\s+$)/g, '');
@@ -90,6 +106,16 @@
             currentYear = new Date().getFullYear();
             return userAge = currentYear - userBirthDate;    
         }
+        //Método para mostrar la información ingresada
+        const showInfo = (data) =>{
+            document.getElementById("dataUserName").textContent = `${data[0]}`;
+            document.getElementById("dataLastName").textContent = `${data[1]}`;
+            document.getElementById("dataAddress").textContent = `${data[2]}`;
+            document.getElementById("dataEmail").textContent = `${data[3]}`;
+            document.getElementById("dataAge").textContent = `${data[4]}`;
+            document.getElementById("dataComments").textContent = `${data[5]}`;
+            document.getElementById("userInformation").style.display = 'inline';
+        }
         //
         //Submit del formulario
         _myForm.addEventListener("submit", event=> {
@@ -104,7 +130,25 @@
                 }
             userAge = getAge(_myForm.userBirthDate.value);
             userComments = _myForm.userComments.value;
-            
+
+            let dataForm = [
+                userName,
+                userLastName,
+                userAddress,
+                userEmail,
+                userAge,
+                userComments
+            ]
+            //Check de que todos los valores sean válidos
+            var check = dataForm.some((element)=>{
+               return element == '' || element == null;
+            })
+            console.log(check);
+            if(check){
+                alert("Error, favor de revisar sus datos ingresados.");
+            }else{
+                showInfo(dataForm);
+            }
         });
         
 
