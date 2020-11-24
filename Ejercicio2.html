@@ -15,6 +15,10 @@
     </head>
     <body>
         <div class="container">
+            <div>
+                <h3>Coordenadas del mouse:</h3>
+                <label id="labelCoords">X: , Y: </label>
+            </div>
             <div class="square" id="sq1" style=" background-color: green;" onmouseover="changeColor(id)">
                 
             </div>
@@ -30,12 +34,24 @@
             <div class="square " id="sq5" style="background-color: orangered;" onmouseover="changeColor(id)">
 
             </div>
+            <div>
+                <input type="color" id="selectedColor" value="#ff0000" onchange="changeBackgroundColorPicker(id)">Elegir Color</input>
+            </div>
         </div>
         <script>
+            //Mouse tracker
+            onmousemove = function(e){
+                document.getElementById("labelCoords").textContent = `X: ${e.clientX}, Y: ${e.clientY}`;
+            }
             //Cambio de color del background en funcion de los div´s
            const changeColor = (id) =>{
             divColor = document.getElementById(id).style.backgroundColor;
             document.body.style.backgroundColor = divColor;            
+           }
+           //Cambio de color del background con el color picker
+           const changeBackgroundColorPicker = (id) => {
+            let pickedColor = document.getElementById(id).value;
+            document.body.style.backgroundColor = pickedColor;
            }
         </script>
     </body>
