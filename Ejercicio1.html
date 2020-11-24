@@ -54,7 +54,8 @@
             <h3>Edad:</h3>
             <label id="dataAge"></label>
             <h3>Observaciones:</h3>
-            <label id="dataComments"></label>
+            <label id="dataComments"></label><br>
+            <button onclick="printInfo('userInformation')">Imprimir</button>
         </div>
     </body>
     <script>
@@ -116,7 +117,14 @@
             document.getElementById("dataComments").textContent = `${data[5]}`;
             document.getElementById("userInformation").style.display = 'inline';
         }
-        //
+        //Método para imprimir
+        const printInfo = (printSection) =>{
+            var printContents = document.getElementById(printSection).innerHTML;
+            var originalContents = document.body.innerHTML;
+            document.body.innerHTML = printContents;
+            window.print();
+            document.body.innerHTML = originalContents;
+        }
         //Submit del formulario
         _myForm.addEventListener("submit", event=> {
             event.preventDefault();
