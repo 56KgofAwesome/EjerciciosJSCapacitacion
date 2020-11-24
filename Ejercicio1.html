@@ -2,6 +2,11 @@
 <html>
     <head>
         <title>Ejercicio 1 - JavaScript</title>
+        <script
+			  src="https://code.jquery.com/jquery-3.5.1.slim.js"
+			  integrity="sha256-DrT5NfxfbHvMHux31Lkhxg42LY6of8TaYyK50jnxRnM="
+              crossorigin="anonymous">
+        </script>
     </head>
     <body>
         <div class="container">
@@ -30,7 +35,8 @@
                 </div>
                 <div class="row">
                     <label>Observaciones</label><br>
-                    <input type="text" name="userComments" id="userComments">
+                    <input type="textarea" name="userComments" id="userComments" maxlength="200" onkeyup="checkCommentLength()"><br>
+                    <span id="remainingCharacters">Caracteres restantes: 200 </span>
                 </div>
                 <button type="submit">Enviar</button>
             </form>
@@ -39,15 +45,28 @@
     <script>
 
         const _myForm = document.getElementById("registerForm");
-        
+        //Limita las fechas del DatePicker
+        $('document').ready(()=>{
+            var dtToday = new Date();
+            var month = dtToday.getMonth() + 1;
+            var day = dtToday.getDate();
+            var year = dtToday.getFullYear();
+            if(month < 10){
+                month = '0' + month.toString();
+            }
+            if(day < 10){
+                day = '0' + day.toString();       
+            }
+            var maxDate = year + '-' + month + '-' + day;
+            $('#userBirthDate').attr('max', maxDate);
+        });
         //Método para limpiar los espacios dobles de los campos Nombre y Apellidos utilizando Expresiones regulares
-        let formatFullName = (nameToFormat,lastNameToFormat) => {
-            nameToFormat = nameToFormat.replace(/([\ \t]+(?=[\ \t])|^\s+|\s+$)/g, '');
-            lastNameToFormat= lastNameToFormat.replace(/([\ \t]+(?=[\ \t])|^\s+|\s+$)/g, '');
-            return nameToFormat,lastNameToFormat;
-        };
+        const formatString = stringToFormat =>{
+            formattedString = stringToFormat.replace(/([\ \t]+(?=[\ \t])|^\s+|\s+$)/g, '');
+            return formattedString;
+        }
         //Método para verificación del formato del email utilizando RegEx
-        let checkEmailFormat = () =>{
+        const checkEmailFormat = () =>{
             let emailText = document.getElementById("userEmail").value;
             let _validator = /\S+@\S+\.\S+/;
             if(_validator.test(emailText) || emailText === ""){
@@ -55,22 +74,39 @@
                 return emailText;
             }else{
                 document.getElementById("wrongEmailFormatMessage").style.display = 'inline';
-                //Retornar valor por defecto, o validar el boton de submit
-            }
-            
+                return null;
+            }          
         };
+        //Verificar la longitud del campo Observaciones
+        const checkCommentLength = () =>{
+            const _maxLength = 200;
+            let comment = document.getElementById("userComments").value.length;
+            let remaningCharacters = _maxLength - comment;
+            document.getElementById("remainingCharacters").textContent = `Caracteres restantes: ${remaningCharacters}`;
+        }
+        //Método para obtener la edad a partir de la fecha de nacimiento.
+        const getAge = stringDate =>{   
+            userBirthDate = +stringDate.slice(0,4);//Convierte a Number el año y recorta el Srting de la fecha
+            currentYear = new Date().getFullYear();
+            return userAge = currentYear - userBirthDate;    
+        }
+        //
         //Submit del formulario
         _myForm.addEventListener("submit", event=> {
             event.preventDefault();
             //Variables del Formulario
-            userName = _myForm.userName.value;
-            userLastName = _myForm.userLastName.value;
+            userName = formatString(_myForm.userName.value);
+            userLastName = formatString(_myForm.userLastName.value);
             userAddress = _myForm.userAddress.value;
-            //Email pendiente
+            userEmail = checkEmailFormat();//Valor del campo email
+                if(userEmail === null || userEmail == ''){
+                    alert('Favor de verificar el campo email');
+                }
+            userAge = getAge(_myForm.userBirthDate.value);
+            userComments = _myForm.userComments.value;
             
-            formatFullName(userName,userLastName);
-             
         });
+        
 
 
 
