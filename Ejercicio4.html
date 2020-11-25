@@ -6,14 +6,90 @@
     <body>
         <div class="container">
             <div>
-                <label>Teclee en esta área:</label>
-                <input type="text" size="100px" id="inputText" onkeypress="checkInput(id)">
+                <label>Teclee en esta área:</label><br>
+                <textarea type="text" size="100px" rows="15" cols="30" id="inputText" oninput="checkInput(id)"></textarea>
+                <button onclick="showTextInfo()">Mostrar información</button>
             </div>
         </div>
     </body>
     <script>
-        const checkInput = (id) =>{
-            var stringText = document.getElementById(id).value;
+        var allData = {};
+         //Contador de palabras
+         const wordCounter = str =>{
+            return str.trim().split(/\s+/).length;
+        }        
+        //Contador de caracteres
+        const charCounter = str =>{
+            stringNoSpaces = str.replace(/\s/g, "");
+            charsInText = stringNoSpaces.length;
+            return charsInText;
         }
+        //Devuelve la primera y última palabra
+        const firstWordAndLastWord = str =>{
+            let arrayOfWords = str.trim().split(" ");
+
+            let firstWord = arrayOfWords[0];
+            let lastWord = arrayOfWords[arrayOfWords.length - 1];
+
+            return {
+                    firstWord,
+                    lastWord
+                };
+        }
+        //Ordena las letras del string---REVISAR
+        const sortString = str =>{
+            let arrayOfWords = str.split("");
+            let reverseArrayOfWords = str.split("");
+
+            let sortedArray = arrayOfWords.sort();
+            let reverseSortedArray = reverseArrayOfWords.sort().reverse();
+
+            let sortedString = sortedArray.join().replace(/,/g, '');
+            let reverseSortedString = reverseSortedArray.join().replace(/,/g, '');
+            return {
+                sortedString,
+                reverseSortedString
+            }   
+        }
+        //Orden inverso del string
+        const invertString = str =>{
+            let invertedString = str.split("").reverse().join("");
+            return invertedString;
+        }
+        //Contador de caracteres individuales
+        const countIndividualCharacters = str =>{
+
+            let stringLength = str.length;
+            var result = {};
+            var repeats = [];
+
+            for(i = 0; i < stringLength; i++){
+                var character = str.charAt(i);
+                result[character] = (isNaN(result[character]) ? 1 : result[character] + 1);                
+            }
+            return result;
+        }
+        //Check del texto el momento de teclear
+        const checkInput = (id) =>{
+            var stringText = document.getElementById(id).value;            
+
+            allData.totalWords = wordCounter(stringText);
+            allData.totalCharacters = charCounter(stringText);
+            allData.firstAndLastWord = firstWordAndLastWord(stringText);
+            allData.sortedText = sortString(stringText);
+            allData.invertedText = invertString(stringText);
+            allData.charsCounted = countIndividualCharacters(stringText);
+
+            console.log(JSON.stringify(allData,undefined,4));
+
+        }
+        //Abre ventana con información del string
+        const showTextInfo = () =>{
+
+            var newWindow = window.open('./Ejercicio4ShowInfo.html',"", "width=600,height=300");
+            newWindow.dataString = allData;
+
+        }
+        
     </script>
 </html>

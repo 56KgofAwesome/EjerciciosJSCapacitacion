@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Ejercicio 4 Información del Texto</title>
+    </head>
+    <body>
+        <div class="container">
+            <div>
+                <h3>Información del Texto ingresado:</h3>
+                <label id="totalWordsLabel"></label><br>
+                <label id="totalCharactersLabel"></label><br>
+                <label id="firstWordLabel"></label><br>
+                <label id="lastWordLabel"></label><br>
+                <label id="invertedTextLabel"></label><br>                
+                <label id="sortedTextLabel"></label><br>
+                <label id="reverseSortedTextLabel"></label><br>
+                <div id="totalCharactersTextLabel"></div><br>
+            </div>
+        </div>
+    </body>
+    <script>
+        console.log(window.dataString);
+        var textData = window.dataString;
+
+        document.getElementById("totalWordsLabel").textContent = `Cantidad de palabras: ${textData.totalWords}`;
+        document.getElementById("totalCharactersLabel").textContent = `Cantidad de caracteres: ${textData.totalCharacters}`;
+        document.getElementById("firstWordLabel").textContent = `Primera palabra: ${textData.firstAndLastWord.firstWord}`;
+        document.getElementById("lastWordLabel").textContent = `Última palabra: ${textData.firstAndLastWord.lastWord}`;
+        document.getElementById("invertedTextLabel").textContent = `Texto invertido: ${textData.invertedText}`;
+        document.getElementById("sortedTextLabel").textContent = `Texto ascendente: ${textData.sortedText.sortedString}`;
+        document.getElementById("reverseSortedTextLabel").textContent = `Texto descendente: ${textData.sortedText.reverseSortedString}`;
+        //
+        document.getElementById("totalCharactersTextLabel").textContent = `Total de caracteres:`;
+        var charsCounted = textData.charsCounted;
+        
+        Object.keys(charsCounted).forEach(key => {            
+            var tag = document.createElement("p");
+            var text = document.createTextNode(`Caracter: ${key}, Número de veces: ${charsCounted[key]}`);
+            tag.appendChild(text);
+            var element = document.getElementById("totalCharactersTextLabel");            
+            element.appendChild(tag);
+        });
+    </script>
+</html>
