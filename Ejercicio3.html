@@ -13,32 +13,54 @@
                 <input type="text" id="inputUSD"><br>
                 <span id="conversionResult">El total es: </span><br>
                 <input type="button" id="convertButton" value="Convertir" onclick="convertCurrency()"><br>
-                <input type="button" id="cleanButton" value="Limpiar" onclick="reset()"><br>
-                <input type="button" id="swapConversionButton" value="Invertir" onclick="swapConversion()">                
+                <input type="button" id="cleanButton" value="Limpiar" onclick="resetForm()"><br>
+                <input type="button" id="swapConversionButton" value="Invertir" onclick="swapConversion()"><br>                
             </form>
         </div>
         <script>
+            //Función que filtra los caracteres ingresados
+            function setInputFilter(textbox, inputFilter) {
+                ["input", "keydown", "keyup", "mousedown", "mouseup", "select", "contextmenu", "drop"].forEach(function(event) {
+                    textbox.addEventListener(event, function() {
+                        if (inputFilter(this.value)) {
+                            this.oldValue = this.value;
+                            this.oldSelectionStart = this.selectionStart;
+                            this.oldSelectionEnd = this.selectionEnd;
+                        }else if(this.hasOwnProperty("oldValue")){
+                            this.value = this.oldValue;
+                            this.setSelectionRange(this.oldSelectionStart, this.oldSelectionEnd);
+                        } else {
+                            this.value = "";
+                        }
+                    });
+                });
+            }
+            //Input Filter del campo MXN
+            setInputFilter(document.getElementById("inputMXN"), function(value) {
+                return /^-?\d*[.,]?\d{0,2}$/.test(value); 
+            });
+            setInputFilter(document.getElementById("inputUSD"), function(value) {
+                return /^-?\d*[.,]?\d{0,2}$/.test(value); 
+            });
             //Variable de control
             var conversionType = true; //True MXN->USD, False USD->MXN;
             //Verificar formato del input
             const isNumber = (id) =>{
-               
+                
             }
             //Limpia el formulario
-            const reset = () =>{
-                document.getElementById("convertCurrencyForm").reset;
+            const resetForm = () => {                
+                document.getElementById("conversionResult").textContent = "El total es: "
+                document.getElementById("convertCurrencyForm").reset();
             }
             //Conversión de MXN a USD 
             const convertCurrency = () =>{
-                let mxnString = document.getElementById("inputMXN").value;
-                let usdString = document.getElementById("inputUSD").value;
-                console.log(typeof mxnString)
+                
+                let mxnValue = +document.getElementById("inputMXN").value;
+                let usdValue = +document.getElementById("inputUSD").value;
 
-                if(mxnString == '' || usdString == ''){
-                    let mxnValue = +document.getElementById("inputMXN").value;
-                    let usdValue = +document.getElementById("inputUSD").value;
-
-                    if(conversionType){
+                if((mxnValue != null && mxnValue != 0)&&(usdValue != null && usdValue != 0)){
+                   if(conversionType){
                         //MXN->USD
                         var conversion = mxnValue / usdValue;
                         document.getElementById("conversionResult").textContent = `El total es: ${conversion} USD`;
@@ -46,12 +68,10 @@
                         //USD->MXN
                         var conversion = mxnValue * usdValue;
                         document.getElementById("conversionResult").textContent = `El total es: ${conversion} MXN`;
-                    }
+                    }   
                 }else{
-                    alert("Ha ocurrido un error, revisa los datos ingresados.")
-                }
-                
-                
+                    alert("Error, datos incompletos");
+                }                                                                            
             }
             //Swap conversión
             const swapConversion = () =>{
