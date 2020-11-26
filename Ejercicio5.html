@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Ejercicio 6</title>
+        <style>
+            .row{
+                width: 100%; /*Optional*/
+                table-layout: fixed; /*Optional*/
+                border-spacing: 10px; /*Optional*/
+            }
+            .column {
+                display: table-cell;                
+            }
+            .board{
+                width: 600px;
+            }
+            .grid-element{
+                width: 200px;
+                height: 200px;
+                border: 1px solid red; 
+                float: left;
+            }
+            .container{
+                width: 600px;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="container">
+            <h3>Tic Tac Toe</h3>
+            <div class="board">
+                <div class="row">
+                    <div class="column">
+                        <div class="column grid-element">
+                            <span>Label</span>
+                        </div>
+                        <div class="column grid-element">
+                            <span>Label</span>
+                        </div>
+                        <div class="column grid-element">
+                            <span>Label</span>
+                        </div>
+                    </div>                    
+                </div>
+            </div>
+        </div>
+    </body>
+</html>
