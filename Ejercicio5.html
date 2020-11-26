@@ -18,6 +18,7 @@
   <body>
     <h3>Juego del gato</h3>
     <div class="game-board">
+      <div class="box" onclick="clickBox(id)" id="box0"></div>
       <div class="box" onclick="clickBox(id)" id="box1"></div>
       <div class="box" onclick="clickBox(id)" id="box2"></div>
       <div class="box" onclick="clickBox(id)" id="box3"></div>
@@ -26,22 +27,100 @@
       <div class="box" onclick="clickBox(id)" id="box6"></div>
       <div class="box" onclick="clickBox(id)" id="box7"></div>
       <div class="box" onclick="clickBox(id)" id="box8"></div>
-      <div class="box" onclick="clickBox(id)" id="box9"></div>
     </div>
     <br />
     <button onclick="resetBoard()">Reiniciar</button>
   </body>
   <script>
+    //Controlador del turno actual
+    var turn = true; //True-> Usuario, False->PC
+    var cellsOccupied = [0, 1, 2, 3, 4, 5, 6, 7, 8];
+    var cells2 = [
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+    ];
     //DIV CLICKABLE
     const clickBox = (id) => {
-      document.getElementById(id).textContent = "X";
+      pve(!turn, id);
+    };
+    //IA
+    const pve = (checkTurn, clickedCell) => {
+      if (checkTurn) {
+        //Esperar a que el usuario haga su turno
+      } else {
+        let clickedCellNumber = +clickedCell.slice(3); //El número de la celda clickeada
+        let randomCellNumber = generateRandomNumber(); //Número de celda que ocupará la IA
+
+        if (checkCell(clickedCellNumber, randomCellNumber)) {
+          //Checar que la casilla elegida no sea la misma que la aleatoria
+          if (clickedCellNumber === randomCellNumber) {
+              deleteAvailabilityCell(clickedCellNumber);
+              cells2[clickedCellNumber] = true;
+              document.getElementById(`box${clickedCellNumber}`).textContent =
+              "X";
+              randomCellNumber = generateRandomNumber();
+              deleteAvailabilityCell(randomCellNumber);
+              cells2[randomCellNumber] = true;
+              document.getElementById(`box${randomCellNumber}`).textContent =
+              "O";
+          } else {
+            deleteAvailabilityCell(clickedCellNumber);
+            deleteAvailabilityCell(randomCellNumber);
+            //USER
+            cells2[clickedCellNumber] = true;
+            document.getElementById(`box${clickedCellNumber}`).textContent =
+              "X";
+            //IA
+            cells2[randomCellNumber] = true;
+            document.getElementById(`box${randomCellNumber}`).textContent = "O";
+            console.log(clickedCellNumber, randomCellNumber);
+          }
+        } else {
+        }
+
+        turn = !checkTurn;
+      }
+    };
+    //Eliminamos la disponibilidad de la celda
+    const deleteAvailabilityCell = (clickedCellNumber) => {
+      cellsOcupiedLength = cellsOccupied.length;
+      for (var i = 0; i < cellsOcupiedLength; i++) {
+        if (cellsOccupied[i] === clickedCellNumber) {
+          cellsOccupied.splice(i, 1);
+          console.log("Celdas disponibles", cellsOccupied);
+        }
+      }
+    };
+    //Verifica si la celda esta ocupada.
+    const checkCell = (clickedCellNumber, randomCellNumber) => {
+      if (!cells2[clickedCellNumber] && !cells2[randomCellNumber]) {
+        return true;
+      } else {
+        return false; //La celda clickeada o la celda aleatoria estan ocupadas
+      }
+    };
+    //Genera numero aleatorio
+    const generateRandomNumber = () => {
+      cellsOccupiedLength = cellsOccupied.length;
+      randomIndexNumber = Math.floor(Math.random() * cellsOccupiedLength);
+      return cellsOccupied[randomIndexNumber];
     };
     //Reset Board
     const resetBoard = () => {
       //Limpia los DIVS
-      for (i = 1; i < 10; i++) {
+      for (i = 0; i < 9; i++) {
         document.getElementById(`box${i}`).textContent = " ";
+        cells2[i] = false;
+        cellsOccupied[i] = i;
       }
+      turn = true;
     };
   </script>
 </html>
