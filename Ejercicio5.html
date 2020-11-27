@@ -46,6 +46,22 @@
       false,
       false,
     ];
+    var winScenarios = [
+      [0, 1, 2],
+      [3, 4, 5],
+      [6, 7, 8],
+      [0, 3, 6],
+      [1, 4, 7],
+      [2, 5, 8],
+      [0, 4, 8],
+      [2, 4, 6],
+    ];
+    var userCells = [];
+    var iaCells = [];
+    var userWinningOdds = 0;
+    var iaWinningOdds = 0;
+    var winOddsUserArray = [];
+    var winOddsIaArray = [];
     //DIV CLICKABLE
     const clickBox = (id) => {
       pve(!turn, id);
@@ -53,40 +69,45 @@
     //IA
     const pve = (checkTurn, clickedCell) => {
       if (checkTurn) {
-        //Esperar a que el usuario haga su turno
       } else {
         let clickedCellNumber = +clickedCell.slice(3); //El número de la celda clickeada
         let randomCellNumber = generateRandomNumber(); //Número de celda que ocupará la IA
 
         if (checkCell(clickedCellNumber, randomCellNumber)) {
-          //Checar que la casilla elegida no sea la misma que la aleatoria
           if (clickedCellNumber === randomCellNumber) {
-              deleteAvailabilityCell(clickedCellNumber);
-              cells2[clickedCellNumber] = true;
-              document.getElementById(`box${clickedCellNumber}`).textContent =
-              "X";
-              randomCellNumber = generateRandomNumber();
-              deleteAvailabilityCell(randomCellNumber);
-              cells2[randomCellNumber] = true;
-              document.getElementById(`box${randomCellNumber}`).textContent =
-              "O";
+            userMove(clickedCellNumber);
+            randomCellNumber = generateRandomNumber();
+            iaMove(randomCellNumber);
           } else {
-            deleteAvailabilityCell(clickedCellNumber);
-            deleteAvailabilityCell(randomCellNumber);
-            //USER
-            cells2[clickedCellNumber] = true;
-            document.getElementById(`box${clickedCellNumber}`).textContent =
-              "X";
-            //IA
-            cells2[randomCellNumber] = true;
-            document.getElementById(`box${randomCellNumber}`).textContent = "O";
-            console.log(clickedCellNumber, randomCellNumber);
+            userMove(clickedCellNumber);
+            iaMove(randomCellNumber);
           }
-        } else {
         }
-
+        gameStatus(userCells, iaCells);
         turn = !checkTurn;
       }
+    };
+    //Registro del movimiento del turno del usuario
+    const userMove = (clickedCell) => {
+      //Movimiento del usuario
+      deleteAvailabilityCell(clickedCell);
+      cells2[clickedCell] = true;
+      document.getElementById(`box${clickedCell}`).textContent = "X";
+      //Registro de movimientos
+      userCells.push(clickedCell);
+      console.log("Casillas del usuario", userCells);
+      return userCells;
+    };
+    //Registro del moviemiento de la IA
+    const iaMove = (choosedCell) => {
+      //Moviemiento de la IA
+      deleteAvailabilityCell(choosedCell);
+      cells2[choosedCell] = true;
+      document.getElementById(`box${choosedCell}`).textContent = "O";
+      //Registro de movimientos
+      iaCells.push(choosedCell);
+      console.log("Casillas de la IA", iaCells);
+      return iaCells;
     };
     //Eliminamos la disponibilidad de la celda
     const deleteAvailabilityCell = (clickedCellNumber) => {
@@ -94,10 +115,26 @@
       for (var i = 0; i < cellsOcupiedLength; i++) {
         if (cellsOccupied[i] === clickedCellNumber) {
           cellsOccupied.splice(i, 1);
-          console.log("Celdas disponibles", cellsOccupied);
         }
       }
     };
+    //Verificamos si el usuario o la IA han ganado
+    const gameStatus = (userCells, iaCells) => {
+      let winScenariosLength = winScenarios.length;
+      let scenario;
+      for (scenario = 0; scenario < winScenariosLength; scenario++) {
+        let scenarioLength = winScenarios[scenario].length;
+        let element = winScenarios[scenario];
+        let item;
+        for (i = 0; i < userCells.length; i++) {
+          for (item = 0; item < scenarioLength; item++) {
+            console.log(userCells[i]);
+          }
+        }
+      }
+    };
+    //Busca celda de usuario en win scenario
+    const searchUserCell = () => {};
     //Verifica si la celda esta ocupada.
     const checkCell = (clickedCellNumber, randomCellNumber) => {
       if (!cells2[clickedCellNumber] && !cells2[randomCellNumber]) {
@@ -119,6 +156,7 @@
         document.getElementById(`box${i}`).textContent = " ";
         cells2[i] = false;
         cellsOccupied[i] = i;
+        userCells = [];
       }
       turn = true;
     };
